@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Select, MenuItem, Button, Box, Paper, TextField } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Button,
+  Box,
+  Paper,
+  TextField,
+} from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
 import { DatePicker } from "@mui/lab";
 import { useForm, Controller } from "react-hook-form";
+import ClasroomSelection from "./components/ClasroomSelection";
 
 function App() {
   const capacidades = [20, 30, 50, 100, 200, 250];
@@ -40,6 +48,13 @@ function App() {
 
   const [horaInicial, setHoraInicial] = useState(null);
 
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //! Metodo para enviar el formulario al servidor
   // const onSubmit = (data) => console.log(data);
 
   // const onSubmit = async (data) => {
@@ -76,7 +91,7 @@ function App() {
       const result = await response;
 
       if (result.valid) {
-        alert("Los datos del formulario son válidos");
+        setOpen(true);
       } else {
         alert("Los datos del formulario no son válidos");
       }
@@ -96,8 +111,6 @@ function App() {
     const mins = minutos % 60;
     return `${horas}:${mins.toString().padStart(2, "0")}`;
   }
-
-  // El resto de tu código...
 
   // Convierte la hora inicial y las horas a minutos
   let horaInicialEnMinutos = null;
@@ -187,6 +200,11 @@ function App() {
           </form>
         </Paper>
       </Box>
+
+      <div>
+        {/* ... */}
+        <ClasroomSelection open={open} handleClose={handleClose} />
+      </div>
     </div>
   );
 }
