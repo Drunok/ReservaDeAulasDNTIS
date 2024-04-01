@@ -82,27 +82,6 @@ function App() {
     }
   };
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     // Simula una petición al servidor que siempre devuelve `valid: true`
-  //     const response = new Promise((resolve) => {
-  //       setTimeout(() => {
-  //         resolve({ valid: true });
-  //       }, 1000); // Espera 1 segundo antes de resolver la promesa
-  //     });
-
-  //     const result = await response;
-
-  //     if (result.valid) {
-  //       setOpen(true);
-  //     } else {
-  //       alert("Los datos del formulario no son válidos");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
   // Define las funciones para convertir horas a minutos y viceversa
   function horaAMinutos(hora) {
     const [horas, minutos] = hora.split(":").map(Number);
