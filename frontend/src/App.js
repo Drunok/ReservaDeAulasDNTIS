@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import {
-  Select,
-  MenuItem,
-  Button,
-  Box,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { Select, MenuItem, Button, Box, Paper, TextField } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
 import { DatePicker } from "@mui/lab";
 import { useForm, Controller } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
+import FechaField from "./components/SelectDate";
 
 function App() {
   const capacidades = [20, 30, 50, 100, 200, 250];
@@ -54,31 +48,35 @@ function App() {
     setOpen(false);
   };
 
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0];
+  
+
   //! Metodo para enviar el formulario al servidor
 
   const onSubmit = async (data) => {
-    
     try {
-      const response = await fetch('http://localhost/insercion.php', {
-        method: 'POST',
+      const response = await fetch("http://localhost/insercion.php", {
+        method: "POST",
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       // console(JSON.stringify(data));
       // console.log(data);
-      
+
       const result = await response.json();
 
       if (result.valid) {
-        alert('Los datos del formulario son válidos');
+        alert("Los datos del formulario son válidos");
       } else {
-        alert('Los datos del formulario no son válidos');
+        alert("Los datos del formulario no son válidos");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -136,22 +134,7 @@ function App() {
             />
             {errors.capacidad && <span>Este campo es requerido</span>}
 
-            <Controller
-              name="fecha"
-              control={control}
-              defaultValue="2022-01-01"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  label="Fecha"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
+            <FechaField control={control} minDate={minDate} maxDate="2024-04-21" />
             {errors.fecha && <span>Este campo es requerido</span>}
 
             <SelectWithItems
