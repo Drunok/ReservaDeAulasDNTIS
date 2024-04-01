@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Select, MenuItem, Button, Box, Paper, TextField } from "@mui/material";
+import { Button, Box, Paper } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
-import { DatePicker } from "@mui/lab";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
 import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
@@ -57,7 +56,7 @@ function App() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost/insercion.php", {
+      const response = await fetch("http://localhost/test.php", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -65,13 +64,11 @@ function App() {
         },
       });
 
-      // console(JSON.stringify(data));
-      // console.log(data);
-
       const result = await response.json();
 
       if (result.valid) {
-        alert("Los datos del formulario son válidos");
+        // alert("Los datos del formulario son válidos");
+        setOpen(true);
       } else {
         alert("Los datos del formulario no son válidos");
       }
@@ -161,9 +158,9 @@ function App() {
                 items={horasFinales}
                 label="Selecciona Hora Final"
               />
-            {errors.horaFinal && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
+              {errors.horaFinal && (
+                <Typography color="error">Este campo es requerido</Typography>
+              )}
             </React.Fragment>
 
             <Button
