@@ -24,7 +24,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 // Valida los datos aquí. Este es solo un ejemplo, deberías hacer tu propia validación.
 $valid = true;
-if (empty($data['nombre']) || empty($data['email'])) {
+if (empty($data['capacidad']) || empty($data['fecha']) || empty($data['hora']) || empty($data['horaFinal'])) {
     $valid = false;
 }
 

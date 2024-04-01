@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import {
-  Select,
-  MenuItem,
-  Button,
-  Box,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { Button, Box, Paper } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
-import { DatePicker } from "@mui/lab";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
+import FechaField from "./components/SelectDate";
+import { Typography } from "@mui/material";
 
 function App() {
   const capacidades = [20, 30, 50, 100, 200, 250];
@@ -54,54 +48,34 @@ function App() {
     setOpen(false);
   };
 
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split("T")[0];
+
   //! Metodo para enviar el formulario al servidor
 
   const onSubmit = async (data) => {
-    
     try {
-      const response = await fetch('http://localhost/insercion.php', {
-        method: 'POST',
+      const response = await fetch("http://localhost/test.php", {
+        method: "POST",
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
-      // console(JSON.stringify(data));
-      // console.log(data);
-      
       const result = await response.json();
 
       if (result.valid) {
-        alert('Los datos del formulario son válidos');
+        // alert("Los datos del formulario son válidos");
+        setOpen(true);
       } else {
-        alert('Los datos del formulario no son válidos');
+        alert("Los datos del formulario no son válidos");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-
-  // const onSubmit = async (data) => {
-  //   try {
-  //     // Simula una petición al servidor que siempre devuelve `valid: true`
-  //     const response = new Promise((resolve) => {
-  //       setTimeout(() => {
-  //         resolve({ valid: true });
-  //       }, 1000); // Espera 1 segundo antes de resolver la promesa
-  //     });
-
-  //     const result = await response;
-
-  //     if (result.valid) {
-  //       setOpen(true);
-  //     } else {
-  //       alert("Los datos del formulario no son válidos");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   // Define las funciones para convertir horas a minutos y viceversa
   function horaAMinutos(hora) {
@@ -155,25 +129,18 @@ function App() {
               items={capacidades}
               label="Selecciona Capacidad"
             />
-            {errors.capacidad && <span>Este campo es requerido</span>}
+            {errors.capacidad && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
-            <Controller
-              name="fecha"
+            <FechaField
               control={control}
-              defaultValue="2022-01-01"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  label="Fecha"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
+              minDate={minDate}
+              maxDate="2024-04-21"
             />
-            {errors.fecha && <span>Este campo es requerido</span>}
+            {errors.fecha && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
             <SelectWithItems
               {...register("hora", { required: true })}
@@ -181,7 +148,9 @@ function App() {
               label="Selecciona Hora"
               onChange={(e) => setHoraInicial(e.target.value)}
             />
-            {errors.hora && <span>Este campo es requerido</span>}
+            {errors.hora && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
             <React.Fragment>
               <SelectWithItems
@@ -189,7 +158,9 @@ function App() {
                 items={horasFinales}
                 label="Selecciona Hora Final"
               />
-              {errors.horaFinal && <span>Este campo es requerido</span>}
+              {errors.horaFinal && (
+                <Typography color="error">Este campo es requerido</Typography>
+              )}
             </React.Fragment>
 
             <Button

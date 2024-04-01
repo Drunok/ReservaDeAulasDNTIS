@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -12,12 +12,20 @@ import {
 
 const ClasroomSelection = ({ open, handleClose }) => {
   const [selected, setSelected] = useState(null);
+  const [items, setItems] = useState([]);
 
-  const items = ["693 A", "693 B", "691 C", "691 A", "617 A", "622", "692 B"];
+  const itemsTmp = ["693 A", "693 B", "691 C", "691 A", "617 A", "622", "692 B"];
 
   const handleSelect = (item) => {
     setSelected(item);
   };
+
+  //! Metodo para obtener los elementos del servidor
+  // useEffect(() => {
+  //   fetch('http://tu-servidor.com/api/ruta')
+  //     .then(response => response.json())
+  //     .then(data => setItems(data));
+  // }, []);
 
   //! Metodo para enviar la seleccion al servidor
   //   const handleConfirm = () => {
@@ -73,7 +81,7 @@ const ClasroomSelection = ({ open, handleClose }) => {
       <DialogContent>
         <DialogContentText>
           <Grid container spacing={2}>
-            {items.map((item, index) => (
+            {itemsTmp.map((item, index) => (
               <Grid item xs={4} key={index}>
                 <Paper
                   onClick={() => handleSelect(item)}
