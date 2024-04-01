@@ -22,9 +22,10 @@ class DbConnect
             $conn = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
             if ($conn) {
                 
-                return json_encode([
-                    'status' => 'success',
-                    'message'=> 'Connection successful']);
+                // return json_encode([
+                //     'status' => 'success',
+                //     'message'=> 'Connection successful']);
+                return $conn;
             }
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
