@@ -57,15 +57,19 @@ function App() {
   //! Metodo para enviar el formulario al servidor
 
   const onSubmit = async (data) => {
+    
     try {
-      const response = await fetch('http://localhost/test.php', {
+      const response = await fetch('http://localhost/insercion.php', {
         method: 'POST',
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
       });
 
+      // console(JSON.stringify(data));
+      console.log(data);
+      
       const result = await response.json();
 
       if (result.valid) {

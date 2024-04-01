@@ -1,6 +1,6 @@
 <?php
 // Permite solicitudes de cualquier origen
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:3000");
 
 // Permite los métodos HTTP que quieres usar
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
