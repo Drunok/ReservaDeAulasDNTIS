@@ -6,7 +6,7 @@ const FechaField = ({ control, minDate, maxDate }) => {
     <Controller
       name="fecha"
       control={control}
-      defaultValue={minDate}
+    //   defaultValue={minDate}
       rules={{ required: true }}
       render={({ field }) => (
         <TextField

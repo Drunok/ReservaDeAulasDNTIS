@@ -6,6 +6,7 @@ import { DatePicker } from "@mui/lab";
 import { useForm, Controller } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
 import FechaField from "./components/SelectDate";
+import { Typography } from "@mui/material";
 
 function App() {
   const capacidades = [20, 30, 50, 100, 200, 250];
@@ -50,8 +51,7 @@ function App() {
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
-  
+  const minDate = tomorrow.toISOString().split("T")[0];
 
   //! Metodo para enviar el formulario al servidor
 
@@ -132,10 +132,18 @@ function App() {
               items={capacidades}
               label="Selecciona Capacidad"
             />
-            {errors.capacidad && <span>Este campo es requerido</span>}
+            {errors.capacidad && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
-            <FechaField control={control} minDate={minDate} maxDate="2024-04-21" />
-            {errors.fecha && <span>Este campo es requerido</span>}
+            <FechaField
+              control={control}
+              minDate={minDate}
+              maxDate="2024-04-21"
+            />
+            {errors.fecha && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
             <SelectWithItems
               {...register("hora", { required: true })}
@@ -143,7 +151,9 @@ function App() {
               label="Selecciona Hora"
               onChange={(e) => setHoraInicial(e.target.value)}
             />
-            {errors.hora && <span>Este campo es requerido</span>}
+            {errors.hora && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
             <React.Fragment>
               <SelectWithItems
@@ -151,7 +161,9 @@ function App() {
                 items={horasFinales}
                 label="Selecciona Hora Final"
               />
-              {errors.horaFinal && <span>Este campo es requerido</span>}
+            {errors.horaFinal && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
             </React.Fragment>
 
             <Button
