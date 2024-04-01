@@ -55,50 +55,49 @@ function App() {
   };
 
   //! Metodo para enviar el formulario al servidor
-  // const onSubmit = (data) => console.log(data);
-
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const response = await fetch('https://tu-servidor.com/validar', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
-
-  //     const result = await response.json();
-
-  //     if (result.valid) {
-  //       alert('Los datos del formulario son válidos');
-  //     } else {
-  //       alert('Los datos del formulario no son válidos');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
 
   const onSubmit = async (data) => {
     try {
-      // Simula una petición al servidor que siempre devuelve `valid: true`
-      const response = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ valid: true });
-        }, 1000); // Espera 1 segundo antes de resolver la promesa
+      const response = await fetch('http://localhost/test.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
-      const result = await response;
+      const result = await response.json();
 
       if (result.valid) {
-        setOpen(true);
+        alert('Los datos del formulario son válidos');
       } else {
-        alert("Los datos del formulario no son válidos");
+        alert('Los datos del formulario no son válidos');
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
+
+  // const onSubmit = async (data) => {
+  //   try {
+  //     // Simula una petición al servidor que siempre devuelve `valid: true`
+  //     const response = new Promise((resolve) => {
+  //       setTimeout(() => {
+  //         resolve({ valid: true });
+  //       }, 1000); // Espera 1 segundo antes de resolver la promesa
+  //     });
+
+  //     const result = await response;
+
+  //     if (result.valid) {
+  //       setOpen(true);
+  //     } else {
+  //       alert("Los datos del formulario no son válidos");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   // Define las funciones para convertir horas a minutos y viceversa
   function horaAMinutos(hora) {
