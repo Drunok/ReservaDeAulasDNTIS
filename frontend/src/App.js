@@ -68,7 +68,7 @@ function App() {
       });
 
       // console(JSON.stringify(data));
-      console.log(data);
+      // console.log(data);
       
       const result = await response.json();
 
