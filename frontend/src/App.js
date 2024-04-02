@@ -78,6 +78,7 @@ function App() {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -89,9 +90,20 @@ function App() {
 
   const [clasroomItems, setClasroomItems] = useState([]);
 
+  const [formKey, setFormKey] = useState(0);
+
+  const onReservaExitosa = () => {
+    setFormKey(formKey + 1);
+  };
+
   const handleClose = () => {
     setOpen(false);
+  
   };
+
+  useEffect(() => {
+    reset();
+  }, [formKey]);
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -189,7 +201,7 @@ function App() {
       >
         <Paper className="reservation-box">
           <h2>Solicitud rápida</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
             <SelectWithItems
               {...register("capacidad", { required: true })}
               items={capacidades}
@@ -267,6 +279,7 @@ function App() {
           handleClose={handleClose}
           formData={formData}
           clasroomItems={clasroomItems}
+          onReservaExitosa={onReservaExitosa}
         />
       </div>
       <div className="App">

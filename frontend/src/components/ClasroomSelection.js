@@ -11,8 +11,9 @@ import {
 } from "@mui/material";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { on } from "events";
 
-const ClasroomSelection = ({ open, handleClose, formData, clasroomItems }) => {
+const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReservaExitosa }) => {
   const [selected, setSelected] = useState(null);
   const [items, setItems] = useState([]);
 
@@ -48,6 +49,8 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems }) => {
             // console.log(data.result);
             console.log("La selección es válida");
             handleClose();
+
+            onReservaExitosa();
           } else {
             console.log(data.result);
             toast.error('Reserva no puede ser realizada');
