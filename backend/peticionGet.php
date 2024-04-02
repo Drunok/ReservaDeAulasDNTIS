@@ -41,39 +41,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (empty($reservas)) {
         echo json_encode([$ambientes]);
     } else {
-        foreach($solicitudesArreglo[0] as $solicitud){
-            if(!$solicitud['aprobado']) {
+        foreach ($solicitudesArreglo[0] as $solicitud) {
+            if (!$solicitud['aprobado']) {
                 // echo json_encode([$solicitud]);
                 $capacidadSolicitud = $solicitud['cantestudiantes'];
-                getAmbientesparaSolicitud($ambientesArreglo, $capacidadSolicitud, $reservasArreglo);
+                $idsolicitud = $solicitud['idsolicitud'];
+                getAmbientesparaSolicitud($ambientesArreglo, $reservasArreglo, $idsolicitud, $capacidadSolicitud, $solicitudesArreglo);
             }
         }
     }
 
 }
 
-function getAmbientesparaSolicitud ($ambientes, $cantEstudiantes, $reservas) {
-    foreach($ambientes[0] as $ambiente) {
-        if($ambiente['capacidad'] >= $cantEstudiantes) {
-            if (!estaReservado($reservas, $ambiente)) {
-                echo json_encode([$ambiente]);
+function getAmbientesparaSolicitud($ambientes, $reservas, $idsolicitud, $cantEstudiantes, $solicitudes)
+{
+    foreach ($ambientes[0] as $ambiente) {
+        if ($ambiente['capacidad'] >= $cantEstudiantes) {
+            if (!estaReservado($reservas, $ambiente, $solicitudes)) {
+                echo json_encode([
+                    'solicitud'=>$idsolicitud,
+                    'cantidadEstudiantes'=>$cantEstudiantes,
+                    'ambientes'=>$ambiente
+                ]);
             }
         }
     }
 }
 
-function estaReservado ($reservas, $ambienteObservado) {
+function estaReservado($reservas, $ambienteObservado, $solicitudes)
+{
+    $res = false;
     if (empty($reservas)) {
-        return false;
+        $res = false;
     } else {
-        foreach($reservas[0] as $ambienteReservado) {
-            if($ambienteReservado['nombreambiente'] == $ambienteObservado['nombreambiente']) {
+        foreach ($reservas[0] as $ambienteReservado) {
+            if ($ambienteReservado['nombreambiente'] == $ambienteObservado['nombreambiente']) {
+                foreach ($solicitudes[0] as $solicitud) {
+                    if (fechaOcupada($solicitudes, $solicitud) && $solicitud['aprobado']) {
+                         return true;
+                    }
+                }
+            }
+        }
+    }
+    return $res;
+}
+
+function fechaOcupada($arregloSolicitudes, $solicitud)
+{
+    $res = false;
+    foreach ($arregloSolicitudes[0] as $otraSolicitud) {
+        if ($otraSolicitud !== $solicitud) {
+            $fechaSolicitud = $solicitud['fechasolicitud'];
+            $horaSolicitud = $solicitud['horainicial'];
+            $horaFinalSolicitud = $solicitud['horafinal'];
+            if ($otraSolicitud['fechasolicitud'] === $fechaSolicitud && $otraSolicitud['horainicial'] === $horaSolicitud && $otraSolicitud['horafinal'] === $horaFinalSolicitud) {
                 return true;
             } else {
-                return false;
-            }    
+                $res = false;
+            }
         }
     }
+    return $res;
 }
 
 
