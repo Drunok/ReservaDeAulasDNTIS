@@ -70,7 +70,7 @@ function App() {
 
       const result = await response.json();
 
-      if (result.valid) {
+      if (result != null) {
         // alert("Los datos del formulario son válidos");
         setFormData(data);
         setOpen(true);
