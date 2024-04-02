@@ -4,9 +4,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST");
 
-// if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-//     exit();
-// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     require 'dbConnect.php';
@@ -34,16 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $reservasJson = json_encode([$reservas]);
     $reservasArreglo = json_decode($reservasJson, true);
 
-    // echo json_encode(['reservados'=>$reservas]);
-    // echo json_encode(['solicitudes'=>$solicitudes]);
-    // echo json_encode(['reservas'=>$reservas]);
-
     if (empty($reservas)) {
         echo json_encode([$ambientes]);
     } else {
         foreach ($solicitudesArreglo[0] as $solicitud) {
             if (!$solicitud['aprobado']) {
-                // echo json_encode([$solicitud]);
                 $capacidadSolicitud = $solicitud['cantestudiantes'];
                 $idsolicitud = $solicitud['idsolicitud'];
                 getAmbientesparaSolicitud($ambientesArreglo, $reservasArreglo, $idsolicitud, $capacidadSolicitud, $solicitudesArreglo);
