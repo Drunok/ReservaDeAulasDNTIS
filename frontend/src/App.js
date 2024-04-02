@@ -35,6 +35,8 @@ function App() {
     "21:45",
   ];
 
+  const horasIniciales = horas.slice(0, - 1);
+
   const docentesList = [
     "Leticia Blanco Coca",
     "Vladimir Abel Costas Jauregui",
@@ -46,7 +48,7 @@ function App() {
       "Introducion a la programacion",
       "Sistemas de informacion I",
     ],
-    "Leon Romero Gualberto": ["Algebra I"],
+
     "Leticia Blanco Coca": [
       "Algoritmos Avanzados",
       "Introducion a la programacion",
@@ -186,7 +188,7 @@ function App() {
         minHeight="calc(100vh - 60px)"
       >
         <Paper className="reservation-box">
-          <h2>Cuadro de reserva</h2>
+          <h2>Solicitud rápida</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <SelectWithItems
               {...register("capacidad", { required: true })}
@@ -208,7 +210,7 @@ function App() {
 
             <SelectWithItems
               {...register("hora", { required: true })}
-              items={horas}
+              items={horasIniciales}
               label="Selecciona Hora"
               onChange={(e) => setHoraInicial(e.target.value)}
             />
