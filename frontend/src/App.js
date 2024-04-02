@@ -163,7 +163,7 @@ function App() {
             <FechaField
               control={control}
               minDate={minDate}
-              maxDate="2024-04-21"
+              maxDate="2024-07-06"
             />
             {errors.fecha && (
               <Typography color="error">Este campo es requerido</Typography>

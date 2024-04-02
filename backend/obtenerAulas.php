@@ -38,11 +38,15 @@ if ($valid) {
     $stmt = $conn->prepare("
     SELECT a.nombreambiente, a.ubicacion, a.capacidad
     FROM ambiente a
-    LEFT JOIN solicitud_ambiente sa ON a.nombreambiente = sa.nombreambiente
-    LEFT JOIN solicitud s ON sa.idsolicitud = s.idsolicitud
     WHERE a.capacidad >= :capacidad
-    AND (s.fechasolicitud IS NULL OR s.fechasolicitud != :fecha
-        OR (s.horainicial >= :horaFinal OR s.horafinal <= :hora))
+    AND a.nombreambiente NOT IN (
+        SELECT sa.nombreambiente
+        FROM solicitud_ambiente sa
+        JOIN solicitud s ON sa.idsolicitud = s.idsolicitud
+        WHERE s.fechasolicitud = :fecha
+        AND s.horainicial < :horaFinal
+        AND s.horafinal > :hora
+    )
     ");
 
     $stmt->execute([
@@ -54,12 +58,21 @@ if ($valid) {
 
     $aulas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    
+
     // $aulas = ['690A, 690B'];
 
 
     // Devuelve los resultados en formato JSON
-    header('Content-Type: application/json');
-    echo json_encode(['aulas' => $aulas]);
+    if (empty($aulas)) {
+        // No se encontraron aulas, devuelve un mensaje de error o un estado diferente
+        http_response_code(404);
+        echo json_encode(['message' => 'No se encontraron aulas']);
+    } else {
+        // Se encontraron aulas, devuelve los resultados en formato JSON
+        header('Content-Type: application/json');
+        echo json_encode(['aulas' => $aulas]);
+    }
 } else {
     // Si los datos no son válidos, devuelve un error
     http_response_code(400);
