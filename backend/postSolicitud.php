@@ -46,35 +46,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindValue(':horaFin', $horaFinal);
 
     
-
     $sqlSolicitud = 'SELECT * FROM solicitud';
     $stmtSolicitud = $conn->query($sqlSolicitud);
     $solicitudes = $stmtSolicitud->fetchAll(PDO::FETCH_ASSOC);
+    // $solicitudesJson = json_encode([$solicitudes]);
+    // $solicitudesArreglo = json_decode($solicitudesJson, true);
 
-    $solicitudesJson = json_encode([$solicitudes]);
-    $solicitudesArreglo = json_decode($solicitudesJson, true);
-
-    function validarSolicitud($stmt, $soliArreglo, $solicitudes, $capacidad, $fecha, $horaInicial, $horaFinal) {
-        $res = false;
-        if (empty($solicitudes)) {
-            $res = true;
-            // echo json_encode(['result' => true]);
-            // exit();
-        } else {
-            foreach($soliArreglo[0] as $solicitud) {
-                if ($solicitud['cantestudiantes'] == $capacidad && $solicitud['fechasolicitud'] == $fecha && $solicitud['horainicial'] == $horaInicial && $solicitud['horafinal'] == $horaFinal) {
-                    // echo json_encode(['result' => false]);
-                    // exit();
-                    $res = false;
-                    return $res;
-                } else {
-                    $res = true;
-                }
-            }    
-        }
-        return $res;
+    function validarSolicitud($solicitudes, $idUsuarioMateria, $fecha, $horaInicial, $horaFinal) {
+        $fecha = new DateTime($fecha);
+        $horaInicial = new DateTime($horaInicial);
+        $horaFinal = new DateTime($horaFinal);
+    
+        foreach($solicitudes as $solicitud) {
+            $fechaSolicitud = new DateTime($solicitud['fechasolicitud']);
+            $horaInicialSolicitud = new DateTime($solicitud['horainicial']);
+            $horaFinalSolicitud = new DateTime($solicitud['horafinal']);
+    
+            if ($solicitud['idusuariomateria'] == $idUsuarioMateria && $fechaSolicitud == $fecha && $horaInicialSolicitud == $horaInicial && $horaFinalSolicitud == $horaFinal) {
+                return false;
+            }
+        }    
+        return true;
     }
-    $validation = validarSolicitud($stmt, $solicitudesArreglo, $solicitudes, $capacidad, $fecha, $horaInicial, $horaFinal);
+    
+    $validation = validarSolicitud($solicitudes, $idUsuarioMateria, $fecha, $horaInicial, $horaFinal);
     if ($validation) {
         $stmt->execute();
         echo json_encode(['result' => true]);

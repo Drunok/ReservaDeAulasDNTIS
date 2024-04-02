@@ -12,7 +12,7 @@ const FechaField = ({ control, minDate, maxDate }) => {
         <TextField
           {...field}
           type="date"
-          label="Fecha"
+          label="Fecha *"
           InputLabelProps={{
             shrink: true,
           }}

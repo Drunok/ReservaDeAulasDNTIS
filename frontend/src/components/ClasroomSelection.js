@@ -50,6 +50,7 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems }) => {
             handleClose();
           } else {
             console.log(data.result);
+            toast.error('Reserva no puede ser realizada');
             console.log("La selección no es válida");
           }
         })

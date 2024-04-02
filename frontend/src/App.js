@@ -193,7 +193,7 @@ function App() {
             <SelectWithItems
               {...register("capacidad", { required: true })}
               items={capacidades}
-              label="Selecciona Capacidad"
+              label="Selecciona Capacidad *"
             />
             {errors.capacidad && (
               <Typography color="error">Este campo es requerido</Typography>
@@ -211,7 +211,7 @@ function App() {
             <SelectWithItems
               {...register("hora", { required: true })}
               items={horasIniciales}
-              label="Selecciona Hora"
+              label="Selecciona Hora *"
               onChange={(e) => setHoraInicial(e.target.value)}
             />
             {errors.hora && (
@@ -222,7 +222,7 @@ function App() {
               <SelectWithItems
                 {...register("horaFinal", { required: true })}
                 items={horasFinales}
-                label="Selecciona Hora Final"
+                label="Selecciona Hora Final *"
               />
               {errors.horaFinal && (
                 <Typography color="error">Este campo es requerido</Typography>
@@ -232,7 +232,7 @@ function App() {
             <SelectWithItems
               {...register("docente", { required: true })}
               items={docentesList}
-              label="Selecciona Docente"
+              label="Selecciona Docente *"
               onChange={(e) => setSelectedDocente(e.target.value)}
             />
             {errors.docente && (
@@ -242,7 +242,7 @@ function App() {
             <SelectWithItems
               {...register("materia", { required: true })}
               items={materias}
-              label="Selecciona Materia"
+              label="Selecciona Materia *"
             />
             {errors.materia && (
               <Typography color="error">Este campo es requerido</Typography>
