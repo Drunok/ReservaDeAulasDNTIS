@@ -31,53 +31,56 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems }) => {
   // }, []);
 
   //! Metodo para enviar la seleccion al servidor
-    // const handleConfirm = () => {
-    //   if (selected) {
+    const handleConfirm = () => {
+      if (selected) {
 
-    //     fetch('http://tu-servidor.com/api/ruta', {
-    //       method: 'POST', // o 'GET', dependiendo de tu API
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({ selected, formData }), // envía el elemento seleccionado como JSON
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       if (data.result) {
-    //         console.log("La selección es válida");
-    //         handleClose();
-    //       } else {
-    //         console.log("La selección no es válida");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error:', error);
-    //     });
-    //   } else {
-    //     alert("Por favor, selecciona un elemento");
-    //   }
-    // };
-
-  const handleConfirm = () => {
-    if (selected) {
-      // Simula una respuesta del servidor
-      Promise.resolve({ result: true })
-        .then((data) => {
+        fetch('http://localhost/postSolicitud.php', {
+          method: 'POST', // o 'GET', dependiendo de tu API
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ selected, formData }), // envía el elemento seleccionado como JSON
+        })
+        .then(response => response.json())
+        .then(data => {
           if (data.result) {
             toast.success('Reserva realizada correctamente');
+            // console.log(data.result);
+            console.log("La selección es válida");
             handleClose();
           } else {
-            toast.error("La selección no es válida");
-
+            console.log(data.result);
+            console.log("La selección no es válida");
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          console.error('Error:', error);
         });
-    } else {
-      alert("Por favor, selecciona un elemento");
-    }
-  };
+      } else {
+        alert("Por favor, selecciona un elemento");
+      }
+    };
+
+  // const handleConfirm = () => {
+  //   if (selected) {
+  //     // Simula una respuesta del servidor
+  //     Promise.resolve({ result: true })
+  //       .then((data) => {
+  //         if (data.result) {
+  //           toast.success('Reserva realizada correctamente');
+  //           handleClose();
+  //         } else {
+  //           toast.error("La selección no es válida");
+
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //       });
+  //   } else {
+  //     alert("Por favor, selecciona un elemento");
+  //   }
+  // };
 
   return (
     <Dialog open={open} onClose={handleClose}>
