@@ -35,6 +35,43 @@ function App() {
     "21:45",
   ];
 
+  const docentesList = [
+    "Leticia Blanco Coca",
+    "Vladimir Abel Costas Jauregui",
+    "Carla Salazar Serrudo",
+  ];
+
+  const materiasPorDocente = {
+    "Carla Salazar Serrudo": [
+      "Introducion a la programacion",
+      "Sistemas de informacion I",
+    ],
+    "Leon Romero Gualberto": ["Algebra I"],
+    "Leticia Blanco Coca": [
+      "Algoritmos Avanzados",
+      "Introducion a la programacion",
+    ],
+    "Vladimir Abel Costas Jauregui": [
+      "Introducion a la programacion",
+      "Programacion Web",
+    ],
+  };
+
+  const [docentes, setDocentes] = useState([]);
+  const [selectedDocente, setSelectedDocente] = useState(null);
+  const [materias, setMaterias] = useState([]);
+
+  const obtenerMaterias = (docente) => {
+    return materiasPorDocente[docente] || [];
+  };
+
+  useEffect(() => {
+    if (selectedDocente) {
+      const nuevasMaterias = obtenerMaterias(selectedDocente);
+      setMaterias(nuevasMaterias);
+    }
+  }, [selectedDocente]);
+
   const {
     register,
     control,
@@ -92,7 +129,7 @@ function App() {
           );
           setClasroomItems(items);
         } else {
-          console.error('No se pudo obtener las aulas del servidor');
+          console.error("No se pudo obtener las aulas del servidor");
         }
 
         setOpen(true);
@@ -189,6 +226,25 @@ function App() {
                 <Typography color="error">Este campo es requerido</Typography>
               )}
             </React.Fragment>
+
+            <SelectWithItems
+              {...register("docente", { required: true })}
+              items={docentesList}
+              label="Selecciona Docente"
+              onChange={(e) => setSelectedDocente(e.target.value)}
+            />
+            {errors.docente && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
+
+            <SelectWithItems
+              {...register("materia", { required: true })}
+              items={materias}
+              label="Selecciona Materia"
+            />
+            {errors.materia && (
+              <Typography color="error">Este campo es requerido</Typography>
+            )}
 
             <Button
               type="submit"
