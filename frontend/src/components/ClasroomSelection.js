@@ -9,14 +9,15 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ClasroomSelection = ({ open, handleClose, formData }) => {
+const ClasroomSelection = ({ open, handleClose, formData, clasroomItems }) => {
   const [selected, setSelected] = useState(null);
   const [items, setItems] = useState([]);
 
-  const itemsTmp = ["693 A", "693 B", "691 C", "691 A", "617 A", "622", "692 B"];
+   const itemsTmp = ["693 A", "693 B", "691 C", "691 A", "617 A", "622", "692 B"];
+
 
   const handleSelect = (item) => {
     setSelected(item);
@@ -24,7 +25,7 @@ const ClasroomSelection = ({ open, handleClose, formData }) => {
 
   //! Metodo para obtener los elementos del servidor
   // useEffect(() => {
-  //   fetch('http://tu-servidor.com/api/ruta')
+  //   fetch('http://localhost/peticionGet.php')
   //     .then(response => response.json())
   //     .then(data => setItems(data));
   // }, []);
@@ -84,8 +85,8 @@ const ClasroomSelection = ({ open, handleClose, formData }) => {
       <DialogContent>
         <DialogContentText>
           <Grid container spacing={2}>
-            {itemsTmp.map((item, index) => (
-              <Grid item xs={4} key={index}>
+            {clasroomItems.map((item, index) => (
+              <Grid item xs={12} key={index}>
                 <Paper
                   onClick={() => handleSelect(item)}
                   style={{

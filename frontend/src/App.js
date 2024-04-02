@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Box, Paper } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
@@ -48,6 +48,8 @@ function App() {
 
   const [formData, setFormData] = useState(null);
 
+  const [clasroomItems, setClasroomItems] = useState([]);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -73,6 +75,26 @@ function App() {
       if (result.valid) {
         // alert("Los datos del formulario son válidos");
         setFormData(data);
+
+        // Obtén los nombres de los ambientes y sus capacidades
+        const responseAulas = await fetch("http://localhost/obtenerAulas.php", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const resultAulas = await responseAulas.json();
+        if (resultAulas && resultAulas.aulas) {
+          const items = resultAulas.aulas.map(
+            (aula) => `${aula.nombreambiente}  (${aula.capacidad})`
+          );
+          setClasroomItems(items);
+        } else {
+          console.error('No se pudo obtener las aulas del servidor');
+        }
+
         setOpen(true);
       } else {
         alert("Los datos del formulario no son válidos");
@@ -186,6 +208,7 @@ function App() {
           open={open}
           handleClose={handleClose}
           formData={formData}
+          clasroomItems={clasroomItems}
         />
       </div>
       <div className="App">
