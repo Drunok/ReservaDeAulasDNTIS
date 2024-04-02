@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
 import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const capacidades = [20, 30, 50, 100, 200, 250];
@@ -44,6 +46,8 @@ function App() {
 
   const [open, setOpen] = useState(false);
 
+  const [formData, setFormData] = useState(null);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -68,6 +72,7 @@ function App() {
 
       if (result.valid) {
         // alert("Los datos del formulario son válidos");
+        setFormData(data);
         setOpen(true);
       } else {
         alert("Los datos del formulario no son válidos");
@@ -177,7 +182,15 @@ function App() {
 
       <div>
         {/* ... */}
-        <ClasroomSelection open={open} handleClose={handleClose} />
+        <ClasroomSelection
+          open={open}
+          handleClose={handleClose}
+          formData={formData}
+        />
+      </div>
+      <div className="App">
+        <ToastContainer position="top-right" />
+        // ...
       </div>
     </div>
   );
