@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Box, Paper, Grid } from "@mui/material";
-import "./App.css";
+import "./App.css"
 import SelectWithItems from "./components/SelectWithItems";
 import { useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
@@ -8,9 +8,10 @@ import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from 'react-router-dom' 
 
-
-function App() {
+const Especial = () => {
+  const navigate = useNavigate();
   const capacidades = [20, 30, 50, 100, 200, 250];
   const horas = [
     "6:45",
@@ -42,8 +43,8 @@ function App() {
 
   const docentesList = [
     "Leticia Blanco Coca",
-    // "Vladimir Abel Costas Jauregui",
-    // "Carla Salazar Serrudo",
+    "Vladimir Abel Costas Jauregui",
+    "Carla Salazar Serrudo",
   ];
 
   const materiasPorDocente = {
@@ -53,10 +54,8 @@ function App() {
     ],
 
     "Leticia Blanco Coca": [
-      "Algoritmos avanzados",
-      "Elementos de programación y estructura de datos",
-      "Introducción a la programación",
-      "Taller de ingenieria de software"
+      "Algoritmos Avanzados",
+      "Introducion a la programacion",
     ],
     "Vladimir Abel Costas Jauregui": [
       "Introducion a la programacion",
@@ -197,22 +196,18 @@ function App() {
   return (
     <div>
       <div className="top-bar">Digital Nest</div>
-        <div>
-          
-          <Grid container>
-              <Grid item xs={12} sm={12}>
-                <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="calc(100vh - 160px)"
-                ml={4}
-          >
-            <Paper className="reservation-box">
-              <h2>Solicitud rápida</h2>
-              <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
-
+       
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              minHeight="calc(100vh - 160px)"
+              ml={4}
+                >
+              <Paper className="reservation-box">
+                  <h2>Solicitud Especial</h2>
+                  <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
               <SelectWithItems
                   {...register("docente", { required: true })}
                   items={docentesList}
@@ -229,6 +224,15 @@ function App() {
                   label="Selecciona Materia *"
                 />
                 {errors.materia && (
+                  <Typography color="error">Este campo es requerido</Typography>
+                )}
+
+                  <SelectWithItems
+                  {...register("cantDocentes", { required: true })}
+                  items={cantDocentes}
+                  label="Cantidad de Docentes*"
+                />
+                {errors.cantDocentes && (
                   <Typography color="error">Este campo es requerido</Typography>
                 )}
 
@@ -272,7 +276,6 @@ function App() {
                 </React.Fragment>
 
 
-
                 <Button
                   type="submit"
                   variant="contained"
@@ -282,32 +285,26 @@ function App() {
                   Confirmar
                 </Button>
               </form>
-            </Paper>
-                </Box>
-              </Grid>
-            
-          </Grid>
-            <div>
-              {/* ... */}
-              <ClasroomSelection
-                open={open}
-                handleClose={handleClose}
-                formData={formData}
-                clasroomItems={clasroomItems}
-                onReservaExitosa={onReservaExitosa}
-              />
-            </div>
-            <div className="App">
-              <ToastContainer position="top-right" />
-              
-            </div>
+        </Paper>
+            </Box>
         
-        </div>
+      <div>
+        {/* ... */}
+        <ClasroomSelection
+          open={open}
+          handleClose={handleClose}
+          formData={formData}
+          clasroomItems={clasroomItems}
+          onReservaExitosa={onReservaExitosa}
+        />
+      </div>
+      <div className="Especial">
+        <ToastContainer position="top-right" />
+      </div>
+      <button onClick={()=> navigate(-1)}>Atras</button>
     </div>
   );
 }
 
-export default App;
 
-
-
+export default Especial;
