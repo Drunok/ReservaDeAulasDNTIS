@@ -42,8 +42,8 @@ function App() {
 
   const docentesList = [
     "Leticia Blanco Coca",
-    "Vladimir Abel Costas Jauregui",
-    "Carla Salazar Serrudo",
+    // "Vladimir Abel Costas Jauregui",
+    // "Carla Salazar Serrudo",
   ];
 
   const materiasPorDocente = {
@@ -53,8 +53,10 @@ function App() {
     ],
 
     "Leticia Blanco Coca": [
-      "Algoritmos Avanzados",
-      "Introducion a la programacion",
+      "Algoritmos avanzados",
+      "Elementos de programación y estructura de datos",
+      "Introducción a la programación",
+      "Taller de ingenieria de software"
     ],
     "Vladimir Abel Costas Jauregui": [
       "Introducion a la programacion",
@@ -210,6 +212,26 @@ function App() {
             <Paper className="reservation-box">
               <h2>Solicitud rápida</h2>
               <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
+
+              <SelectWithItems
+                  {...register("docente", { required: true })}
+                  items={docentesList}
+                  label="Selecciona Docente *"
+                  onChange={(e) => setSelectedDocente(e.target.value)}
+                />
+                {errors.docente && (
+                  <Typography color="error">Este campo es requerido</Typography>
+                )}
+
+                <SelectWithItems
+                  {...register("materia", { required: true })}
+                  items={materias}
+                  label="Selecciona Materia *"
+                />
+                {errors.materia && (
+                  <Typography color="error">Este campo es requerido</Typography>
+                )}
+
                 <SelectWithItems
                   {...register("capacidad", { required: true })}
                   items={capacidades}
@@ -249,24 +271,7 @@ function App() {
                   )}
                 </React.Fragment>
 
-                <SelectWithItems
-                  {...register("docente", { required: true })}
-                  items={docentesList}
-                  label="Selecciona Docente *"
-                  onChange={(e) => setSelectedDocente(e.target.value)}
-                />
-                {errors.docente && (
-                  <Typography color="error">Este campo es requerido</Typography>
-                )}
 
-                <SelectWithItems
-                  {...register("materia", { required: true })}
-                  items={materias}
-                  label="Selecciona Materia *"
-                />
-                {errors.materia && (
-                  <Typography color="error">Este campo es requerido</Typography>
-                )}
 
                 <Button
                   type="submit"
@@ -294,7 +299,7 @@ function App() {
             </div>
             <div className="App">
               <ToastContainer position="top-right" />
-              // ...
+              
             </div>
         
         </div>

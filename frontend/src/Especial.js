@@ -300,7 +300,6 @@ const Especial = () => {
       </div>
       <div className="Especial">
         <ToastContainer position="top-right" />
-        // ...
       </div>
       <button onClick={()=> navigate(-1)}>Atras</button>
     </div>
