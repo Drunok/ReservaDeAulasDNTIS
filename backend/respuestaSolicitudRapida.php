@@ -57,24 +57,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $solicitudesNoAtendidas;
     }
 
+    
+
     function atenderSolicitudesPendientes($conn, $fecha, $horaInicial, $horaFinal)
     {
-        $sql = "UPDATE solicitud SET revisionestapendiente = 0 WHERE revisionestapendiente = 1";
+        $numSolicitudesSinAtender = getNumSolicitudesSinAtender($conn);
+
+        $sql = "UPDATE solicitud SET revisionestapendiente = false WHERE revisionestapendiente = true";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
-        $sqlAceptacion = "UPDATE solicitud SET solicitudfueaceptada = 1 WHERE solicitudfueaceptada = 0";
+        $sqlAceptacion = "UPDATE solicitud SET solicitudfueaceptada = true WHERE solicitudfueaceptada = false";
         $stmtAceptacion = $conn->prepare($sqlAceptacion);
         $stmtAceptacion->execute();
 
-        $sqlConfirmarAmbiente = "UPDATE periodo_academico_disponible SET estadisponible = 0 WHERE estadisponible = 1 AND fechadisponible = :fecha AND horainicial = :horaInicialFormulario AND horafinal = :horaFinalFormulario";
-        $stmtConfirmarAmbiente = $conn->prepare($sqlConfirmarAmbiente);
-        $stmtConfirmarAmbiente->bindParam(':fecha', $fecha);
-        $stmtConfirmarAmbiente->bindParam(':horaInicialFormulario', $horaInicial);
-        $stmtConfirmarAmbiente->bindParam(':horaFinalFormulario', $horaFinal);
+        // $sqlConfirmarAmbiente = "UPDATE periodo_academico_disponible SET estadisponible = false WHERE estadisponible = true AND fechadisponible = :fecha AND horainicial = :horaInicialFormulario AND horafinal = :horaFinalFormulario";
+        // $stmtConfirmarAmbiente = $conn->prepare($sqlConfirmarAmbiente);
+        // $stmtConfirmarAmbiente->bindParam(':fecha', $fecha);
+        // $stmtConfirmarAmbiente->bindParam(':horaInicialFormulario', $horaInicial);
+        // $stmtConfirmarAmbiente->bindParam(':horaFinalFormulario', $horaFinal);
+
+        // $stmtConfirmarAmbiente->execute();
+
+
     }
 
-    $fechasSolicitudesSinAtender = getFechaSolicitudesNoAtendidas($conn);
+    function getNumSolicitudesSinAtender($conn) {
+        $sql = "SELECT COUNT(*) FROM solicitud WHERE revisionestapendiente = false";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $numSolicitudesSinAtender = $stmt->fetch(PDO::FETCH_ASSOC);
+        // echo json_encode($numSolicitudesSinAtender);
+        return $numSolicitudesSinAtender['count'];
+    }
+
+    function getIdsSolicitudesSinAtender($conn) {
+        $sql = "SELECT idsolicitud FROM solicitud WHERE revisionestapendiente = false";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $idsSolicitudesSinAtender = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $idsSolicitudesSinAtender = array_map(function($solicitud) {
+            return $solicitud['idsolicitud'];
+        }, $idsSolicitudesSinAtender);
+        echo json_encode($idsSolicitudesSinAtender);
+    }
+
+    
+
+    getIdsSolicitudesSinAtender($conn);
+    // $numSolicitudesSinAtender = getNumSolicitudesSinAtender($conn);
+    // echo json_encode($numSolicitudesSinAtender);
+
+
+
+
+    // getSolicitudes($conn);
+    // atenderSolicitudesPendientes($conn, $fecha, $horaInicial, $horaFinal);
     // echo json_encode($fechasSolicitudesSinAtender);
     // echo json_encode ($fechasSolicitudesSinAtender[0]['fechasolicitud']);
 
