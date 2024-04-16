@@ -157,13 +157,12 @@ function App() {
       if (result != null) {
         // alert("Los datos del formulario son válidos");
         setFormData(data);
-        // TODO obtener las aulas del servidor
         // Obtén los nombres de los ambientes y sus capacidades
         const responseAulas = await fetch(
           "http://localhost/getAmbientesDisponibles.php",
           {
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify({formData: data}),
             headers: {
               "Content-Type": "application/json",
             },
@@ -175,9 +174,10 @@ function App() {
         }
 
         const resultAulas = await responseAulas.json();
-        if (resultAulas && resultAulas.aulas) {
-          const items = resultAulas.aulas.map(
-            (aula) => `${aula.nombreambiente}  (${aula.capacidad})`
+        
+        if (resultAulas && resultAulas.infoAmbiente) {
+          const items = resultAulas.infoAmbiente.map(
+            (aula) => `${aula.nombreambiente}  (${aula.capacidadambiente})`
           );
           setClasroomItems(items);
         } else {
@@ -248,16 +248,16 @@ function App() {
                     {...register("docente", { required: true })}
                     items={docentesList}
                     label="Nombre del docente *"
-                    onChange={(e) => setSelectedDocente(e.target.value)}
-                    value={docentesList[0]}
-                    disabled
+                    // onChange={(e) => setSelectedDocente(e.target.value)}
+                    // TODO algo raro pasa
+                    // value={docentesList[0]}
                     // disabled
                   />
-                  {errors.docente && (
+                  {/* {errors.docente && (
                     <Typography color="error">
                       Este campo es requerido
                     </Typography>
-                  )}
+                  )} */}
 
                   <SelectWithItems
                     {...register("materia", { required: true })}
