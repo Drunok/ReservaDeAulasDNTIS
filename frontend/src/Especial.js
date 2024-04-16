@@ -311,7 +311,10 @@ const Especial = () => {
       </div>
       <div className="Especial">
         <ToastContainer position="top-right" />
+<<<<<<< HEAD
         
+=======
+>>>>>>> 006356e5b41480665764b87acfa67ad075c45ec8
       </div>
       
     </div>
