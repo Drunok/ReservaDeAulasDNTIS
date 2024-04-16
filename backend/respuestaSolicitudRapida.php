@@ -81,8 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $idsSolicitudesSinAtender;
     }
 
+
     $solicitudesAtendidas = atenderSolicitudesPendientes($conn);
 
     echo json_encode(['solicitudesAtendidas' => $solicitudesAtendidas]);
+
 
 }
