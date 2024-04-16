@@ -1,13 +1,14 @@
 import React from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Responder = () => {
   const handleClick = () => {
-    fetch("http://localhost/tu-endpoint", {
-      method: "POST",
+    fetch("http://localhost/respuestaSolicitudRapida.php", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ key: "value" }), // reemplaza esto con tus datos
     })
       .then((response) => {
         if (!response.ok) {
@@ -16,7 +17,13 @@ export const Responder = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        if (data.solicitudesAtendidas > 0) {
+            console.log(data.solicitudesAtendidas);
+            toast.success("Se han atendido "+ data.solicitudesAtendidas +" solicitudes pendientes");
+          } else {
+            console.log(data.solicitudesAtendidas);
+            toast.error("No existen solicitudes pendientes");
+          }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -26,8 +33,9 @@ export const Responder = () => {
   return (
     <div>
       <button className="btnres" onClick={handleClick}>
-        Responder Solicitud
+      Atender automáticamente
       </button>
+      <ToastContainer />
     </div>
   );
 };
