@@ -58,7 +58,7 @@ const ClasroomSelection = ({
       const newFormData = { ...formData, ambiente: ambienteTrimmed, capacidad };
 
       console.log(JSON.stringify({ formData: newFormData }));
-      fetch("http://localhost/solicitudDocentePost.php", {
+      fetch("http://localhost/solicitudRapidaPost.php", {
         method: "POST", // o 'GET', dependiendo de tu API
         headers: {
           "Content-Type": "application/json",
@@ -68,6 +68,7 @@ const ClasroomSelection = ({
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
+            console.log(data.result);
             toast.success("Reserva realizada correctamente");
             // console.log(data.result);
             console.log("La selección es válida");
