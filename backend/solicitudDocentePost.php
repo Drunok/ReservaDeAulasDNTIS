@@ -68,13 +68,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtSolicitudDocente->bindValue(':idsolicitud', $lastId);
         $stmtSolicitudDocente->bindValue(':iddocentemotivo', $idDocenteMotivo);
         // echo json_encode([$lastId, $idDocenteMotivo]);
-        echo json_encode(['id solicitud emparejada' => $lastId, 'id docente motivo emparejado' => $idDocenteMotivo]);
+        // echo json_encode(['id solicitud emparejada' => $lastId, 'id docente motivo emparejado' => $idDocenteMotivo]);
         $stmtSolicitudDocente->execute();
 
         $sql = "SELECT * FROM solicitud_docente";
         $stmt = $conn->query($sql);
         $solicitudDocente = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['solicitudDocente' => $solicitudDocente]);
+        // echo json_encode(['solicitudDocente' => $solicitudDocente]);
     }
 
     function emparejarDocenteMotivo($conn, $idDocente, $idMotivo) {
@@ -88,6 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "SELECT * FROM docente_motivo";
         $stmt = $conn->query($sql);
         $docenteMotivo = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['docenteMotivo' => $docenteMotivo]);
+        // echo json_encode(['docenteMotivo' => $docenteMotivo]);
     }
 }

@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //ejecuta la consulta y sube los datos a la tabla solicitud
         $stmt->execute();
         $lastIdSolicitud = getLastIdSolicitud($conn);
-        echo json_encode(['ultima solicitud hecha por docente' => $lastIdSolicitud]);
+        echo json_encode(['result' => true]);
         $idDocentePost = getIdDocenteByName($conn, $nombreDocente);
         $idMotivoPost = getIdMotivoByName($conn, $motivo);
         emparejarDocenteMotivo($conn, $idDocentePost, $idMotivoPost);
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         emparejarSolicitudDocenteMotivo($conn, $idDocenteMotivo, $lastIdSolicitud);
 
     } else {
-        echo json_encode(['error' => 'Ya existe una solicitud para la misma hora y fecha en el mismo ambiente']);
+        echo json_encode(['result' => false]);
     }
 
 
