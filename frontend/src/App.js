@@ -162,7 +162,7 @@ function App() {
           "http://localhost/getAmbientesDisponibles.php",
           {
             method: "POST",
-            body: JSON.stringify({formData: data}),
+            body: JSON.stringify({ formData: data }),
             headers: {
               "Content-Type": "application/json",
             },
