@@ -11,17 +11,60 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/*-----------------botones-------------------------------*/
 
-nav{
-  background-color: aliceblue;
-  padding: 16px 32px;
+/*---------------------------------*/
+.solicitudes{
+  
+  padding: 2rem 2rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  
+  box-sizing: border-box;
 }
 
-nav a {
-  margin-right: 16px;
+.solicitud{
+  margin-top: 140px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;  
+ 
 }
 
-nav a.active{
-  text-decoration: none;
-  font-weight: bold;
+.solicitud:hover{
+  border: 6px solid #08a05c55 ;
 }
+
+.solicitudimg img{
+  width: 350px;
+}
+ .solicitud .buttom{
+  width: 90%;
+  height: 45px; 
+  display:grid;
+ }
+ .buttom div{
+  background-color: #003770;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;
+ }
+ .buttom div a{
+  color: white;
+  font-weight: 700;
+
+ }
+ .responder{
+  background-color: #003770;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;
+ }
+ 
+
+/*----botones------*/
+

@@ -8,9 +8,13 @@ import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from 'react-router-dom'
+import { SlActionUndo } from "react-icons/sl";
+
 
 
 function App() {
+  const navigate = useNavigate();
   const capacidades = [20, 30, 50, 100, 200, 250];
   const horas = [
     "6:45",
@@ -205,7 +209,7 @@ function App() {
                 justifyContent="center"
                 alignItems="center"
                 minHeight="calc(100vh - 160px)"
-                ml={4}
+                
           >
             <Paper className="reservation-box">
               <h2>Solicitud rápida</h2>
@@ -276,6 +280,16 @@ function App() {
                 >
                   Confirmar
                 </Button>
+                <Button 
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  margin="normal"
+                  onClick={()=> navigate(-1)}>
+                   
+                    ATRAS 
+                    <SlActionUndo position="center" />
+                </Button> 
               </form>
             </Paper>
                 </Box>

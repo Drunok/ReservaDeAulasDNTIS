@@ -1,35 +1,62 @@
 import React from "react";
-import { BrowserRouter, Link , Route , Routes, NavLink} from 'react-router-dom'
+import { BrowserRouter, Route , Routes ,Switch} from 'react-router-dom'
 import Especial from "./Especial";
 import App from "./App";
-import "./App.css";
-import { Atras } from "./components/Atras";
+import Responder from "./Responder";
+
+import IMG from "../src/campus.jpg"
 
 
-const inlineStyles = {
-    padding: 5,
-}
 
 const Principal = () =>{
     return (
         <BrowserRouter>
+             
          <div className="top-bar">Digital Nest</div>
             <body >
-                <nav>
-                    <NavLink  to='/Especial' style={inlineStyles}>
-                        Especial 
-                    </NavLink>
-                    <Link className="link" to='/App' style={inlineStyles}>
-                        Rapida
-                    </Link>
-                    </nav>
+                <div className="solicitud">
+                    <div className="solicitudes">
+                        <a href='/Especial'>
+                        <div className="solicitudimg">
+                            <img src={IMG} alt=""/>
+                        </div>
+                        </a>
+                        <div className="buttom">
+                            <div>
+                            <a href='/Especial' className="btn">Solicitud Especial</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div className="solicitudes">
+                        <a href='/App'>
+                        <div className="solicitudimg">
+                            <img src={IMG} alt="campus2.jpg"></img>
+                        </div>
+                        </a>
+                        <div className="buttom">
+                            <div>
+                            <a href='/App' className="btn">Solicitud Rapida</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
             </body>
-            <div className="link">
+            <div >
+                
             <Routes>
-                    <Route path='atras' element={<Atras/>}/>
-                     <Route path="/Especial" element={<Especial />} />
-                     <Route path="/App" element={<App />} />
+                    
+                     <Route path="/Especial" element={<Especial />}/>
+                     <Route path="/App" element={<App />}  />
+                     
              </Routes>
+            
+             <Routes>
+                    <Route path="/Responder" element={<Responder/>}/>
+            </Routes>
+             
              </div>
         </BrowserRouter>
     )

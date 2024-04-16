@@ -41,3 +41,18 @@ form {
   flex-direction: column;
   gap: 10px;
 }
+
+.btnres{
+  
+  margin-top: 80px;
+
+  background-color: #003770;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  border-radius: 10px;
+  height: 40px;
+  color: white;
+  font-weight: 700;
+  
+}

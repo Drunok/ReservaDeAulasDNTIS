@@ -9,6 +9,7 @@ import { Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useNavigate} from 'react-router-dom' 
+import { SlActionUndo } from "react-icons/sl";
 
 const Especial = () => {
   const navigate = useNavigate();
@@ -203,7 +204,7 @@ const Especial = () => {
               justifyContent="center"
               alignItems="center"
               minHeight="calc(100vh - 160px)"
-              ml={4}
+              
                 >
               <Paper className="reservation-box">
                   <h2>Solicitud Especial</h2>
@@ -284,6 +285,16 @@ const Especial = () => {
                 >
                   Confirmar
                 </Button>
+                <Button 
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  margin="normal"
+                  onClick={()=> navigate(-1)}>
+                   
+                    ATRAS 
+                    <SlActionUndo position="center" />
+                </Button>  
               </form>
         </Paper>
             </Box>
@@ -300,9 +311,9 @@ const Especial = () => {
       </div>
       <div className="Especial">
         <ToastContainer position="top-right" />
-        // ...
+        
       </div>
-      <button onClick={()=> navigate(-1)}>Atras</button>
+      
     </div>
   );
 }
