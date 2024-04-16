@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Box, Paper } from "@mui/material";
+import { Button, Box, Paper, Grid } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
 import { useForm } from "react-hook-form";
@@ -35,29 +35,54 @@ function App() {
     "21:45",
   ];
 
-  const horasIniciales = horas.slice(0, - 1);
+  const horasIniciales = horas.slice(0, -1);
+
+  const cantDocentes = [1, 2, 3];
 
   const docentesList = [
     "Leticia Blanco Coca",
-    "Vladimir Abel Costas Jauregui",
-    "Carla Salazar Serrudo",
+    // "Vladimir Abel Costas Jauregui",
+    // "Carla Salazar Serrudo",
   ];
 
-  const materiasPorDocente = {
-    "Carla Salazar Serrudo": [
-      "Introducion a la programacion",
-      "Sistemas de informacion I",
-    ],
+  // const materiasPorDocente = {
+  //   "Carla Salazar Serrudo": [
+  //     "Introducion a la programacion",
+  //     "Sistemas de informacion I",
+  //   ],
 
-    "Leticia Blanco Coca": [
-      "Algoritmos Avanzados",
-      "Introducion a la programacion",
-    ],
-    "Vladimir Abel Costas Jauregui": [
-      "Introducion a la programacion",
-      "Programacion Web",
-    ],
+  //   "Leticia Blanco Coca": [
+  //     "Algoritmos avanzados",
+  //     "Elementos de programación y estructura de datos",
+  //     "Introducción a la programación",
+  //     "Taller de ingenieria de software",
+  //   ],
+  //   "Vladimir Abel Costas Jauregui": [
+  //     "Introducion a la programacion",
+  //     "Programacion Web",
+  //   ],
+  // };
+
+  const materiasPorDocente = {
+    "Algoritmos avanzados": ["Grupo 1"],
+    "Elementos de programación y estructura de datos": ["Grupo 2", "Grupo 3"],
+    "Introducción a la programación": ["Grupo 2"],
+    "Taller de ingenieria de software": ["Grupo 2"],
   };
+
+  const materiasList = [
+    "Algoritmos avanzados",
+    "Elementos de programación y estructura de datos",
+    "Introducción a la programación",
+    "Taller de ingenieria de software",
+  ];
+
+  const motivos = [
+    "Primer Parcial",
+    "Segundo Parcial",
+    "Examen Final",
+    "Segunda Instancia",
+  ];
 
   const [docentes, setDocentes] = useState([]);
   const [selectedDocente, setSelectedDocente] = useState(null);
@@ -98,7 +123,6 @@ function App() {
 
   const handleClose = () => {
     setOpen(false);
-  
   };
 
   useEffect(() => {
@@ -110,36 +134,50 @@ function App() {
   const minDate = tomorrow.toISOString().split("T")[0];
 
   //! Metodo para enviar el formulario al servidor
-
+  // TODO Verificacion de los datos
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost/test.php", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "http://localhost/solicitudRapidaValidador.php",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const result = await response.json();
 
       if (result != null) {
         // alert("Los datos del formulario son válidos");
         setFormData(data);
-
         // Obtén los nombres de los ambientes y sus capacidades
-        const responseAulas = await fetch("http://localhost/obtenerAulas.php", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const responseAulas = await fetch(
+          "http://localhost/getAmbientesDisponibles.php",
+          {
+            method: "POST",
+            body: JSON.stringify({ formData: data }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!responseAulas.ok) {
+          throw new Error(`HTTP error! status: ${responseAulas.status}`);
+        }
 
         const resultAulas = await responseAulas.json();
-        if (resultAulas && resultAulas.aulas) {
-          const items = resultAulas.aulas.map(
-            (aula) => `${aula.nombreambiente}  (${aula.capacidad})`
+        console.log(resultAulas);
+        if (resultAulas && resultAulas.infoAmbiente) {
+          const items = resultAulas.infoAmbiente.map(
+            (aula) => `${aula.nombreambiente} (${aula.capacidadambiente})`
           );
           setClasroomItems(items);
         } else {
@@ -192,99 +230,142 @@ function App() {
   return (
     <div>
       <div className="top-bar">Digital Nest</div>
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="calc(100vh - 60px)"
-      >
-        <Paper className="reservation-box">
-          <h2>Solicitud rápida</h2>
-          <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
-            <SelectWithItems
-              {...register("capacidad", { required: true })}
-              items={capacidades}
-              label="Selecciona Capacidad *"
-            />
-            {errors.capacidad && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
-
-            <FechaField
-              control={control}
-              minDate={minDate}
-              maxDate="2024-07-06"
-            />
-            {errors.fecha && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
-
-            <SelectWithItems
-              {...register("hora", { required: true })}
-              items={horasIniciales}
-              label="Selecciona Hora *"
-              onChange={(e) => setHoraInicial(e.target.value)}
-            />
-            {errors.hora && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
-
-            <React.Fragment>
-              <SelectWithItems
-                {...register("horaFinal", { required: true })}
-                items={horasFinales}
-                label="Selecciona Hora Final *"
-              />
-              {errors.horaFinal && (
-                <Typography color="error">Este campo es requerido</Typography>
-              )}
-            </React.Fragment>
-
-            <SelectWithItems
-              {...register("docente", { required: true })}
-              items={docentesList}
-              label="Selecciona Docente *"
-              onChange={(e) => setSelectedDocente(e.target.value)}
-            />
-            {errors.docente && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
-
-            <SelectWithItems
-              {...register("materia", { required: true })}
-              items={materias}
-              label="Selecciona Materia *"
-            />
-            {errors.materia && (
-              <Typography color="error">Este campo es requerido</Typography>
-            )}
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              margin="normal"
-            >
-              Confirmar
-            </Button>
-          </form>
-        </Paper>
-      </Box>
-
       <div>
-        {/* ... */}
-        <ClasroomSelection
-          open={open}
-          handleClose={handleClose}
-          formData={formData}
-          clasroomItems={clasroomItems}
-          onReservaExitosa={onReservaExitosa}
-        />
-      </div>
-      <div className="App">
-        <ToastContainer position="top-right" />
-        // ...
+        <Grid container>
+          <Grid item xs={12} sm={12}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              minHeight="calc(100vh - 160px)"
+              ml={4}
+            >
+              <Paper className="reservation-box">
+                <h2>Solicitud rápida</h2>
+                <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
+                  <SelectWithItems
+                    {...register("docente", { required: true })}
+                    items={docentesList}
+                    label="Nombre del docente *"
+                    // onChange={(e) => setSelectedDocente(e.target.value)}
+                    // TODO algo raro pasa
+                    // value={docentesList[0]}
+                    // disabled
+                  />
+                  {/* {errors.docente && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )} */}
+
+                  <SelectWithItems
+                    {...register("materia", { required: true })}
+                    items={materiasList}
+                    label="Materia *"
+                    onChange={(e) => setSelectedDocente(e.target.value)}
+                  />
+                  {errors.materia && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <SelectWithItems
+                    {...register("grupo", { required: true })}
+                    items={materias}
+                    label="Grupo *"
+                  />
+                  {errors.grupo && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <SelectWithItems
+                    {...register("motivo", { required: true })}
+                    items={motivos}
+                    label="Motivo de la reserva*"
+                  />
+                  {errors.motivo && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <SelectWithItems
+                    {...register("capacidad", { required: true })}
+                    items={capacidades}
+                    label="Capacidad *"
+                  />
+                  {errors.capacidad && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <FechaField
+                    control={control}
+                    minDate={minDate}
+                    maxDate="2024-07-06"
+                  />
+                  {errors.fecha && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <SelectWithItems
+                    {...register("hora", { required: true })}
+                    items={horasIniciales}
+                    label="Hora inicial *"
+                    onChange={(e) => setHoraInicial(e.target.value)}
+                  />
+                  {errors.hora && (
+                    <Typography color="error">
+                      Este campo es requerido
+                    </Typography>
+                  )}
+
+                  <React.Fragment>
+                    <SelectWithItems
+                      {...register("horaFinal", { required: true })}
+                      items={horasFinales}
+                      label="Hora final *"
+                    />
+                    {errors.horaFinal && (
+                      <Typography color="error">
+                        Este campo es requerido
+                      </Typography>
+                    )}
+                  </React.Fragment>
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    margin="normal"
+                  >
+                    Confirmar
+                  </Button>
+                </form>
+              </Paper>
+            </Box>
+          </Grid>
+        </Grid>
+        <div>
+          {/* ... */}
+          <ClasroomSelection
+            open={open}
+            handleClose={handleClose}
+            formData={formData}
+            clasroomItems={clasroomItems}
+            onReservaExitosa={onReservaExitosa}
+          />
+        </div>
+        <div className="App">
+          <ToastContainer position="top-right" />
+        </div>
       </div>
     </div>
   );
