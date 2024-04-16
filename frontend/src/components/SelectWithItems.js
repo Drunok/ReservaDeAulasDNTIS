@@ -7,7 +7,7 @@ function SelectWithItems({ items, label, value, ...props }) {
       variant="outlined"
       margin="normal"
       label={label}
-      // value={"Leticia Blanco Coca"}
+      value={value}
       {...props}
     >
       {items.map((item, index) => (
