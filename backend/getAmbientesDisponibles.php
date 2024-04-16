@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $periodo = getInfoPeriodoAcademicoDisponible($conn, $fecha, $horaInicial, $horaFinal);
     // $idAmbiente = $periodo -> idambiente;
     function getNombreCapacidadAmbientesDisponibles($conn, $infoPeriodoAcademicoDisponible) {
+        $ambientes = [];
         foreach ($infoPeriodoAcademicoDisponible as $periodo) {
             $idAmbiente = $periodo['idambiente'];
             $sql = "SELECT nombreambiente, capacidadambiente FROM ambiente WHERE idambiente = :idAmbiente";
@@ -78,12 +79,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindValue(':idAmbiente', $idAmbiente);
             $stmt->execute();
             $infoAmbiente = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $ambientesPeriodo = array_map(function($ambiente) {
+                return [
+                    'nombre' => $ambiente['nombreambiente'],
+                    'capacidad' => $ambiente['capacidadambiente']
+                ];
+            }, $infoAmbiente);
+            $ambientes = array_merge($ambientes, $ambientesPeriodo);
             // $infoAmbiente['idambiente'] = $idAmbiente;
             // echo json_encode($infoAmbiente);
             // $capacidad = $infoAmbiente['capacidadambiente'];
             // $nombre = $infoAmbiente['nombreambiente'];
-            echo json_encode(['infoAmbiente' => $infoAmbiente]);
         }
+        echo json_encode($ambientes);
     }
 
     getNombreCapacidadAmbientesDisponibles($conn, $periodo);

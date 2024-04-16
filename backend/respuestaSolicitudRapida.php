@@ -44,12 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     //Obtiene el id de las solicitudes atendidas
-    function getSolicitudesNoAtendidas($conn) {
+    function getFechaSolicitudesNoAtendidas($conn) {
         $sql = "SELECT fechasolicitud FROM solicitud WHERE solicitudfueaceptada = false AND revisionestapendiente = true";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $solicitudesNoAtendidas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($solicitudesNoAtendidas);
+
+        $fechas = array_map(function($solicitud) {
+            return $solicitud['fechasolicitud'];
+        }, $solicitudesNoAtendidas);
+        echo json_encode($fechas);
         return $solicitudesNoAtendidas;
     }
 
@@ -70,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtConfirmarAmbiente->bindParam(':horaFinalFormulario', $horaFinal);
     }
 
-    $fechasSolicitudesSinAtender = getSolicitudesNoAtendidas($conn);
-    echo json_encode($fechasSolicitudesSinAtender);
-    echo json_encode ($fechasSolicitudesSinAtender[0]['fechasolicitud']);
+    $fechasSolicitudesSinAtender = getFechaSolicitudesNoAtendidas($conn);
+    // echo json_encode($fechasSolicitudesSinAtender);
+    // echo json_encode ($fechasSolicitudesSinAtender[0]['fechasolicitud']);
 
 }
