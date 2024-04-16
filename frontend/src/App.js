@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Box, Paper, Grid } from "@mui/material";
 import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
 import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
@@ -162,7 +162,7 @@ function App() {
           "http://localhost/getAmbientesDisponibles.php",
           {
             method: "POST",
-            body: JSON.stringify({ formData: data }),
+            body: JSON.stringify({formData: data}),
             headers: {
               "Content-Type": "application/json",
             },
@@ -175,11 +175,11 @@ function App() {
 
         const resultAulas = await responseAulas.json();
         console.log(resultAulas);
-        if (resultAulas && resultAulas.infoAmbiente) {
-          const items = resultAulas.infoAmbiente.map(
-            (aula) => `${aula.nombreambiente} (${aula.capacidadambiente})`
+        if (resultAulas && Array.isArray(resultAulas)) {
+          const aulas = resultAulas.map(
+            (aula) => `${aula.nombre} (${aula.capacidad})`
           );
-          setClasroomItems(items);
+          setClasroomItems(aulas);
         } else {
           console.error("No se pudo obtener las aulas del servidor");
         }
