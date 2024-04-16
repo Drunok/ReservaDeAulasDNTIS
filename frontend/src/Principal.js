@@ -16,14 +16,14 @@ const Principal = () =>{
         <BrowserRouter>
          <div className="top-bar">Digital Nest</div>
             <body >
-                <nav>
+                {/* <div>
                     <NavLink  to='/Especial' style={inlineStyles}>
                         Especial 
                     </NavLink>
                     <Link className="link" to='/App' style={inlineStyles}>
                         Rapida
                     </Link>
-                    </nav>
+                    </div> */}
             </body>
             <div className="link">
             <Routes>
