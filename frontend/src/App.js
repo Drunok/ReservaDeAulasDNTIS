@@ -162,7 +162,7 @@ function App() {
           "http://localhost/getAmbientesDisponibles.php",
           {
             method: "POST",
-            body: JSON.stringify({formData: data}),
+            body: JSON.stringify({ formData: data }),
             headers: {
               "Content-Type": "application/json",
             },
@@ -174,10 +174,10 @@ function App() {
         }
 
         const resultAulas = await responseAulas.json();
-        
+        console.log(resultAulas);
         if (resultAulas && resultAulas.infoAmbiente) {
           const items = resultAulas.infoAmbiente.map(
-            (aula) => `${aula.nombreambiente}  (${aula.capacidadambiente})`
+            (aula) => `${aula.nombreambiente} (${aula.capacidadambiente})`
           );
           setClasroomItems(items);
         } else {
