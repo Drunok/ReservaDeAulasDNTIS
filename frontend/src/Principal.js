@@ -4,6 +4,7 @@ import Especial from "./Especial";
 import App from "./App";
 import "./App.css";
 import { Atras } from "./components/Atras";
+import { Responder } from "./components/Responder";
 
 
 const inlineStyles = {
@@ -29,6 +30,7 @@ const Principal = () =>{
                     <Route path='atras' element={<Atras/>}/>
                      <Route path="/Especial" element={<Especial />} />
                      <Route path="/App" element={<App />} />
+                     <Route path="Responder" element={<Responder/>}/>
              </Routes>
              </div>
         </BrowserRouter>
