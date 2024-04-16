@@ -34,7 +34,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newDB = new NewDBConnect();
     $conn = $newDB->connect();
 
-    function atenderSolicitudesPendientes($conn)
+    //Se modifica el estado de las solicitudes pendientes
+    function getSolicitudes($conn) {
+        $sql = "SELECT * FROM solicitud";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $solicitudes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($solicitudes);
+    }
+    
+    //Obtiene el id de las solicitudes atendidas
+    function getSolicitudesNoAtendidas($conn) {
+        $sql = "SELECT fechasolicitud FROM solicitud WHERE solicitudfueaceptada = false AND revisionestapendiente = true";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $solicitudesNoAtendidas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($solicitudesNoAtendidas);
+        return $solicitudesNoAtendidas;
+    }
+
+    function atenderSolicitudesPendientes($conn, $fecha, $horaInicial, $horaFinal)
     {
         $sql = "UPDATE solicitud SET revisionestapendiente = 0 WHERE revisionestapendiente = 1";
         $stmt = $conn->prepare($sql);
@@ -44,8 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtAceptacion = $conn->prepare($sqlAceptacion);
         $stmtAceptacion->execute();
 
-        // $sqlConfirmarAmbiente = "UPDATE periodo_academico_disponible SET estadisponible = 0 WHERE estadisponible = 1 AND fechadisponible = ";
-
+        $sqlConfirmarAmbiente = "UPDATE periodo_academico_disponible SET estadisponible = 0 WHERE estadisponible = 1 AND fechadisponible = :fecha AND horainicial = :horaInicialFormulario AND horafinal = :horaFinalFormulario";
+        $stmtConfirmarAmbiente = $conn->prepare($sqlConfirmarAmbiente);
+        $stmtConfirmarAmbiente->bindParam(':fecha', $fecha);
+        $stmtConfirmarAmbiente->bindParam(':horaInicialFormulario', $horaInicial);
+        $stmtConfirmarAmbiente->bindParam(':horaFinalFormulario', $horaFinal);
     }
+
+    $fechasSolicitudesSinAtender = getSolicitudesNoAtendidas($conn);
+    echo json_encode($fechasSolicitudesSinAtender);
+    echo json_encode ($fechasSolicitudesSinAtender[0]['fechasolicitud']);
 
 }
