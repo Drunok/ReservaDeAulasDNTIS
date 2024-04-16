@@ -12,19 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Informacion del formulario
     $formData = $data->formData;
 
-    $nombreDocente = 'Leticia Blanco';
+    // $nombreDocente = 'Leticia Blanco';
     $capacidad = $formData->capacidad;
     $fecha = $formData->fecha;
     $horaInicial = $formData->hora;
     $horaFinal = $formData->horaFinal;
-    $motivo = $formData->motivo;
-    $ambiente = $formData->ambiente;
+    // $motivo = $formData->motivo;
+    // $ambiente = $formData->ambiente;
     $pendiente = 1;
     $aprobado = 0;
     $esUrgente = 0;
 
     //Se valida que no haya campos vacios
-    if (empty($capacidad) || empty($fecha) || empty($horaInicial) || empty($horaFinal) || empty($motivo) || empty($ambiente)) {
+    if (empty($capacidad) || empty($fecha) || empty($horaInicial) || empty($horaFinal)) {
         http_response_code(400); // Bad Request
         echo json_encode(['error' => 'Faltan campos requeridos en la solicitud']);
         exit();
@@ -60,13 +60,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $idPeriodoAcademico = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // echo json_encode(['periodo' => $idPeriodoAcademico['idperiodoacademicodisponible']]);
+        // return $idPeriodoAcademico[0]['idambiente'];
         return $idPeriodoAcademico;
     }
 
     
+
+    
     // $idAmbientePost = getIdAmbienteByName($conn, $ambiente);
     $periodo = getInfoPeriodoAcademicoDisponible($conn, $fecha, $horaInicial, $horaFinal);
-    echo json_encode(['periodo academico disponible' => $periodo]);
+    // $idAmbiente = $periodo -> idambiente;
+    function getNombreCapacidadAmbientesDisponibles($conn, $infoPeriodoAcademicoDisponible) {
+        foreach ($infoPeriodoAcademicoDisponible as $periodo) {
+            $idAmbiente = $periodo['idambiente'];
+            $sql = "SELECT nombreambiente, capacidadambiente FROM ambiente WHERE idambiente = :idAmbiente";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':idAmbiente', $idAmbiente);
+            $stmt->execute();
+            $infoAmbiente = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // $infoAmbiente['idambiente'] = $idAmbiente;
+            // echo json_encode($infoAmbiente);
+            // $capacidad = $infoAmbiente['capacidadambiente'];
+            // $nombre = $infoAmbiente['nombreambiente'];
+            echo json_encode(['infoAmbiente' => $infoAmbiente]);
+        }
+    }
+
+    getNombreCapacidadAmbientesDisponibles($conn, $periodo);
+
+    //Se obtiene la informacion de los ambientes disponibles en los horarios establecidos
+
+
     
     
 
