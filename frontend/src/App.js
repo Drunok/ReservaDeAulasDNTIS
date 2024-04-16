@@ -115,10 +115,10 @@ function App() {
   const minDate = tomorrow.toISOString().split("T")[0];
 
   //! Metodo para enviar el formulario al servidor
-
+  // TODO Verificacion de los datos
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost/test.php", {
+      const response = await fetch("http://localhost/solicitudRapidaValidador.php", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -131,9 +131,9 @@ function App() {
       if (result != null) {
         // alert("Los datos del formulario son válidos");
         setFormData(data);
-
+        // TODO obtener las aulas del servidor
         // Obtén los nombres de los ambientes y sus capacidades
-        const responseAulas = await fetch("http://localhost/obtenerAulas.php", {
+        const responseAulas = await fetch("http://localhost/getAmbientesDisponibles.php", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
@@ -216,8 +216,10 @@ function App() {
               <SelectWithItems
                   {...register("docente", { required: true })}
                   items={docentesList}
-                  label="Selecciona Docente *"
+                  label="Nombre del docente *"
                   onChange={(e) => setSelectedDocente(e.target.value)}
+                  // value={"docentesList[0]"}
+                  // disabled
                 />
                 {errors.docente && (
                   <Typography color="error">Este campo es requerido</Typography>
@@ -226,7 +228,7 @@ function App() {
                 <SelectWithItems
                   {...register("materia", { required: true })}
                   items={materias}
-                  label="Selecciona Materia *"
+                  label="Materia *"
                 />
                 {errors.materia && (
                   <Typography color="error">Este campo es requerido</Typography>

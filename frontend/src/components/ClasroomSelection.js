@@ -35,7 +35,7 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReser
     const handleConfirm = () => {
       if (selected) {
 
-        fetch('http://localhost/postSolicitud.php', {
+        fetch('http://localhost/solicitudDocentePost.php', {
           method: 'POST', // o 'GET', dependiendo de tu API
           headers: {
             'Content-Type': 'application/json',
