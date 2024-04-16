@@ -135,10 +135,10 @@ const ClasroomSelection = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Salir
+          Cancelar
         </Button>
         <Button onClick={handleConfirm} color="primary" autoFocus>
-          Confirmar
+          Solicitar
         </Button>
       </DialogActions>
     </Dialog>

@@ -346,7 +346,7 @@ function App() {
                     color="primary"
                     margin="normal"
                   >
-                    Confirmar
+                    Seleccionar ambiente
                   </Button>
                 </form>
               </Paper>
