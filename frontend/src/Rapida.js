@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Box, Paper, Grid } from "@mui/material";
-import "./App.css"
+import "./App.css";
 import SelectWithItems from "./components/SelectWithItems";
 import { useForm } from "react-hook-form";
 import ClasroomSelection from "./components/ClasroomSelection";
@@ -8,10 +8,12 @@ import FechaField from "./components/SelectDate";
 import { Typography } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate} from 'react-router-dom' 
+import {useNavigate} from 'react-router-dom'
 import { SlActionUndo } from "react-icons/sl";
 
-const Especial = () => {
+
+
+function Rapida() {
   const navigate = useNavigate();
   const capacidades = [20, 30, 50, 100, 200, 250];
   const horas = [
@@ -44,8 +46,8 @@ const Especial = () => {
 
   const docentesList = [
     "Leticia Blanco Coca",
-    "Vladimir Abel Costas Jauregui",
-    "Carla Salazar Serrudo",
+    // "Vladimir Abel Costas Jauregui",
+    // "Carla Salazar Serrudo",
   ];
 
   const materiasPorDocente = {
@@ -55,8 +57,10 @@ const Especial = () => {
     ],
 
     "Leticia Blanco Coca": [
-      "Algoritmos Avanzados",
-      "Introducion a la programacion",
+      "Algoritmos avanzados",
+      "Elementos de programación y estructura de datos",
+      "Introducción a la programación",
+      "Taller de ingenieria de software"
     ],
     "Vladimir Abel Costas Jauregui": [
       "Introducion a la programacion",
@@ -195,21 +199,24 @@ const Especial = () => {
   const horasFinales = horasFinalesEnMinutos.map(minutosAHora);
 
   return (
-    
     <div>
       <div className="top-bar">Digital Nest</div>
-       
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              minHeight="calc(100vh - 160px)"
-              
-                >
-              <Paper className="reservation-box">
-                  <h2>Solicitud Especial</h2>
-                  <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          
+          <Grid container>
+              <Grid item xs={12} sm={12}>
+                <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="calc(100vh - 160px)"
+                
+          >
+            <Paper className="reservation-box">
+              <h2>Solicitud rápida</h2>
+              <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
+
               <SelectWithItems
                   {...register("docente", { required: true })}
                   items={docentesList}
@@ -226,15 +233,6 @@ const Especial = () => {
                   label="Selecciona Materia *"
                 />
                 {errors.materia && (
-                  <Typography color="error">Este campo es requerido</Typography>
-                )}
-
-                  <SelectWithItems
-                  {...register("cantDocentes", { required: true })}
-                  items={cantDocentes}
-                  label="Cantidad de Docentes*"
-                />
-                {errors.cantDocentes && (
                   <Typography color="error">Este campo es requerido</Typography>
                 )}
 
@@ -278,6 +276,7 @@ const Especial = () => {
                 </React.Fragment>
 
 
+
                 <Button
                   type="submit"
                   variant="contained"
@@ -295,28 +294,34 @@ const Especial = () => {
                    
                     ATRAS 
                     <SlActionUndo position="center" />
-                </Button>  
+                </Button> 
               </form>
-        </Paper>
-            </Box>
+            </Paper>
+                </Box>
+              </Grid>
+            
+          </Grid>
+            <div>
+              {/* ... */}
+              <ClasroomSelection
+                open={open}
+                handleClose={handleClose}
+                formData={formData}
+                clasroomItems={clasroomItems}
+                onReservaExitosa={onReservaExitosa}
+              />
+            </div>
+            <div className="Rapida">
+              <ToastContainer position="top-right" />
+              
+            </div>
         
-      <div>
-        {/* ... */}
-        <ClasroomSelection
-          open={open}
-          handleClose={handleClose}
-          formData={formData}
-          clasroomItems={clasroomItems}
-          onReservaExitosa={onReservaExitosa}
-        />
-      </div>
-      <div className="Especial">
-        <ToastContainer position="top-right" />
-      </div>
-      
+        </div>
     </div>
   );
 }
 
+export default Rapida;
 
-export default Especial;
+
+

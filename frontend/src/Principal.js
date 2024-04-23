@@ -1,64 +1,28 @@
 import React from "react";
-import { BrowserRouter, Route , Routes ,Switch} from 'react-router-dom'
+import { BrowserRouter as Router, Route , Routes} from 'react-router-dom'
 import Especial from "./Especial";
-import App from "./App";
+import Rapida from "./Rapida";
 import Responder from "./Responder";
-
-import IMG from "../src/campus.jpg"
+import App from "./App"
 
 
 
 const Principal = () =>{
     return (
-        <BrowserRouter>
-             
-         <div className="top-bar">Digital Nest</div>
-            <body >
-                <div className="solicitud">
-                    <div className="solicitudes">
-                        <a href='/Especial'>
-                        <div className="solicitudimg">
-                            <img src={IMG} alt=""/>
-                        </div>
-                        </a>
-                        <div className="buttom">
-                            <div>
-                            <a href='/Especial' className="btn">Solicitud Especial</a>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div className="solicitudes">
-                        <a href='/App'>
-                        <div className="solicitudimg">
-                            <img src={IMG} alt="campus2.jpg"></img>
-                        </div>
-                        </a>
-                        <div className="buttom">
-                            <div>
-                            <a href='/App' className="btn">Solicitud Rapida</a>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-                
-            </body>
+        <Router>
             <div >
-                
-            <Routes>
-                    
-                     <Route path="/Especial" element={<Especial />}/>
-                     <Route path="/App" element={<App />}  />
-                     
-             </Routes>
             
-             <Routes>
-                    <Route path="/Responder" element={<Responder/>}/>
+            <Routes>
+                    <Route exact path ="/" element={<App/>}/>
+                    <Route exact path="/Rapida" element={<Rapida />}  />
+                    <Route exact path="/Especial" element={<Especial/>}  />
             </Routes>
-             
+            
+            <Routes>
+                   <Route exact path="/Responder" element={<Responder/>}/>
+           </Routes>
              </div>
-        </BrowserRouter>
+        </Router>
     )
 }
 

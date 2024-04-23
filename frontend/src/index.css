@@ -14,20 +14,22 @@ code {
 /*-----------------botones-------------------------------*/
 
 /*---------------------------------*/
-.solicitudes{
+.solicitud{
   
   padding: 2rem 2rem;
-  margin: 0 auto;
+  margin-top: 300px;
   display: grid;
+  flex-direction: row;
   grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
   
   box-sizing: border-box;
+  
 }
 
-.solicitud{
-  margin-top: 140px;
+.solicitudes{
+  
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   align-items: center;  
  
@@ -38,7 +40,9 @@ code {
 }
 
 .solicitudimg img{
+  margin-top: 30px;
   width: 350px;
+  display: flex;
 }
  .solicitud .buttom{
   width: 90%;
