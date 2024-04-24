@@ -1,12 +1,13 @@
 import { TextField, MenuItem } from '@mui/material';
 
-function SelectWithItems({ items, label, ...props }) {
+function SelectWithItems({ items, label, value, ...props }) {
   return (
     <TextField
       select
       variant="outlined"
       margin="normal"
       label={label}
+      value={value}
       {...props}
     >
       {items.map((item, index) => (

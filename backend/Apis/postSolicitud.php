@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData = $data->formData;
 
     $idUsuarioMateria = 1;
+    // $idDocente = 1;
     $capacidad = $formData->capacidad;
     $fecha = $formData->fecha;
     $motivo = 'reservado para examen';

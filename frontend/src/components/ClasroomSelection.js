@@ -9,16 +9,29 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { on } from "events";
 
-const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReservaExitosa }) => {
+const ClasroomSelection = ({
+  open,
+  handleClose,
+  formData,
+  clasroomItems,
+  onReservaExitosa,
+}) => {
   const [selected, setSelected] = useState(null);
   const [items, setItems] = useState([]);
 
-   const itemsTmp = ["693 A", "693 B", "691 C", "691 A", "617 A", "622", "692 B"];
-
+  const itemsTmp = [
+    "693 A",
+    "693 B",
+    "691 C",
+    "691 A",
+    "617 A",
+    "622",
+    "692 B",
+  ];
 
   const handleSelect = (item) => {
     setSelected(item);
@@ -32,20 +45,31 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReser
   // }, []);
 
   //! Metodo para enviar la seleccion al servidor
-    const handleConfirm = () => {
-      if (selected) {
+  const handleConfirm = () => {
+    if (selected) {
+      // Extrae el nombre y la capacidad del ambiente de "selected"
+      const [ambiente, capacidadConParentesis] = selected.split(" (");
+      const capacidad = parseInt(capacidadConParentesis.replace(")", ""), 10);
 
-        fetch('http://localhost/postSolicitud.php', {
-          method: 'POST', // o 'GET', dependiendo de tu API
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ selected, formData }), // envía el elemento seleccionado como JSON
-        })
-        .then(response => response.json())
-        .then(data => {
+      // Elimina los espacios en blanco al inicio y al final de la cadena "ambiente"
+      const ambienteTrimmed = ambiente.trim();
+
+      // Crea un nuevo objeto formData que incluye el ambiente seleccionado y la capacidad
+      const newFormData = { ...formData, ambiente: ambienteTrimmed, capacidad };
+
+      console.log(JSON.stringify({ formData: newFormData }));
+      fetch("http://localhost/solicitudRapidaPost.php", {
+        method: "POST", // o 'GET', dependiendo de tu API
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ formData: newFormData }), // envía el elemento seleccionado como JSON
+      })
+        .then((response) => response.json())
+        .then((data) => {
           if (data.result) {
-            toast.success('Reserva realizada correctamente');
+            console.log(data.result);
+            toast.success("Reserva realizada correctamente");
             // console.log(data.result);
             console.log("La selección es válida");
             handleClose();
@@ -53,17 +77,17 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReser
             onReservaExitosa();
           } else {
             console.log(data.result);
-            toast.error('Reserva no puede ser realizada');
+            toast.error("Reserva no puede ser realizada");
             console.log("La selección no es válida");
           }
         })
         .catch((error) => {
-          console.error('Error:', error);
+          console.error("Error:", error);
         });
-      } else {
-        alert("Por favor, selecciona un elemento");
-      }
-    };
+    } else {
+      alert("Por favor, selecciona un elemento");
+    }
+  };
 
   // const handleConfirm = () => {
   //   if (selected) {
@@ -111,14 +135,13 @@ const ClasroomSelection = ({ open, handleClose, formData, clasroomItems, onReser
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Salir
+          Cancelar
         </Button>
         <Button onClick={handleConfirm} color="primary" autoFocus>
-          Confirmar
+          Solicitar
         </Button>
       </DialogActions>
     </Dialog>
-
   );
 };
 
