@@ -1,39 +1,28 @@
 import React from "react";
-import { BrowserRouter, Link , Route , Routes, NavLink} from 'react-router-dom'
+import { BrowserRouter as Router, Route , Routes} from 'react-router-dom'
 import Especial from "./Especial";
-import App from "./App";
-import "./App.css";
-import { Atras } from "./components/Atras";
-import { Responder } from "./components/Responder";
+import Rapida from "./Rapida";
+import Responder from "./Responder";
+import App from "./App"
 
 
-const inlineStyles = {
-    padding: 5,
-}
 
 const Principal = () =>{
     return (
-        <BrowserRouter>
-         <div className="top-bar">Digital Nest</div>
-            <body >
-                {/* <div>
-                    <NavLink  to='/Especial' style={inlineStyles}>
-                        Especial 
-                    </NavLink>
-                    <Link className="link" to='/App' style={inlineStyles}>
-                        Rapida
-                    </Link>
-                    </div> */}
-            </body>
-            <div className="link">
+        <Router>
+            <div >
+            
             <Routes>
-                    <Route path='atras' element={<Atras/>}/>
-                     <Route path="/Especial" element={<Especial />} />
-                     <Route path="/App" element={<App />} />
-                     <Route path="Responder" element={<Responder/>}/>
-             </Routes>
+                    <Route exact path ="/" element={<App/>}/>
+                    <Route exact path="/Rapida" element={<Rapida />}  />
+                    <Route exact path="/Especial" element={<Especial/>}  />
+            </Routes>
+            
+            <Routes>
+                   <Route exact path="/Responder" element={<Responder/>}/>
+           </Routes>
              </div>
-        </BrowserRouter>
+        </Router>
     )
 }
 
